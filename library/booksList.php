@@ -2,7 +2,6 @@
 require "/inc/lib.inc.php";
 require "/inc/config.inc.php";
 $books = selectItemsFromBooks();
-$authors = selectItemsFromAuthors();
 if ($books === false) {
     echo "Error!";
     exit;
@@ -35,15 +34,12 @@ if (!count($books)) {
     <?php
     foreach ($books as $book) {
         $authorId = $book['author'];
-        foreach ($authors as $author) {
-            if ($author['id'] == $authorId) {
-                $authorFullName =
-                    $author['name']
-                    . ' ' . $author['surname']
-                    . ' ' . $author['patronymic'];
-                $authorCountry = $author['country'];
-            }
-        }
+        $author = getItemFromAuthors($authorId);
+        $authorFullName =
+            $author['name']
+            . ' ' . $author['surname']
+            . ' ' . $author['patronymic'];
+        $authorCountry = $author['country'];
         ?>
         <tr>
             <td><?= $book['title'] ?></td>

@@ -24,17 +24,6 @@ function addItemToBooks($title, $author, $pages, $pubYear, $publisher, $cover)
     return true;
 }
 
-function selectItemsFromAuthors()
-{
-    global $link;
-    $sql = 'SELECT id, name, surname, patronymic, country FROM authors';
-
-    if (!$result = mysqli_query($link, $sql)) return false;
-    $items = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    mysqli_free_result($result);
-    return $items;
-}
-
 function getIdOfAuthor($name, $surname, $patronymic, $country)
 {
     $authors = selectItemsFromAuthors();
@@ -66,4 +55,27 @@ function selectItemsFromBooks()
     $items = mysqli_fetch_all($result, MYSQLI_ASSOC);
     mysqli_free_result($result);
     return $items;
+}
+
+function getItemFromBooks($id)
+{
+    global $link;
+    $sql = "SELECT id, title, author, pages, pubYear, publisher, cover FROM books WHERE id = '$id'";
+
+    if (!$result = mysqli_query($link, $sql)) return false;
+    $items = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_free_result($result);
+    return $items[0];
+}
+
+
+function getItemFromAuthors($id)
+{
+    global $link;
+    $sql = "SELECT id, name, surname, patronymic, country FROM authors WHERE id = '$id'";
+
+    if (!$result = mysqli_query($link, $sql)) return false;
+    $items = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_free_result($result);
+    return $items[0];
 }
