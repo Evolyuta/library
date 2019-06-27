@@ -33,24 +33,27 @@ if ($id) {
 
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $dateUpDate = time();
+        $dateCreated = time();
 
 
         if ($_POST['authorFullName']) {
             $name = explode(" ", $_POST['authorFullName'])[0];
             $surname = explode(" ", $_POST['authorFullName'])[1];
             $patronymic = explode(" ", $_POST['authorFullName'])[2];
+            $authorCountry = $_POST['authorCountry'];
             if ($_POST['authorCountry']) {
                 $authorCountry = $_POST['authorCountry'];
             };
-            $newAuthorId = getIdOfAuthor($name, $surname, $patronymic, $authorCountry);
+            $newAuthorId = getIdOfAuthor($name, $surname, $patronymic, $authorCountry, $dateCreated);
             if ($newAuthorId == $authorId) {
-                editItemInAuthors($name, $surname, $patronymic, $authorCountry, $authorId);
+                editItemInAuthors($name, $surname, $patronymic, $authorCountry, $authorId, $dateUpDate);
             } else $authorId = $newAuthorId;
         };
 
         if ($_POST['authorCountry']) {
             $authorCountry = $_POST['authorCountry'];
-            editCountryInAuthors($authorCountry, $authorId);
+            editCountryInAuthors($authorCountry, $dateUpDate, $authorId);
         };
 
         if ($_POST['title']) $title = clearStr($_POST['title']); else $title = $book["title"];
@@ -58,7 +61,7 @@ if ($id) {
         if ($_POST['pubYear']) $pubYear = clearStr($_POST['pubYear']); else $pubYear = $book["pubYear"];
         if ($_POST['publisher']) $publisher = clearStr($_POST['publisher']); else $publisher = $book["publisher"];
         if ($_POST['cover']) $cover = clearStr($_POST['cover']); else $cover = $book["cover"];
-        editItemInBooks($title, $authorId, $pages, $pubYear, $publisher, $cover, $id);
+        editItemInBooks($title, $authorId, $pages, $pubYear, $publisher, $cover, $dateUpDate, $id);
 
         echo "Книга изменена! <a href='http://library/index.php?id=list'>Вернуться к списку книг";
         exit;

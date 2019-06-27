@@ -12,13 +12,14 @@ function clearInt($data)
     return abs((int)($data));
 }
 
-function addItemToBooks($title, $author, $pages, $pubYear, $publisher, $cover)
+function addItemToBooks($title, $author, $pages, $pubYear, $publisher, $cover, $dateCreated)
 {
     global $link;
-    $sql = 'INSERT INTO books (title, author, pages, pubYear, publisher, cover) VALUES (?,?,?,?,?,?)';
+    $sql = 'INSERT INTO books (title, author, pages, pubYear, publisher, cover, created_at) VALUES (?,?,?,?,?,?,?)';
 
     if (!$stmt = mysqli_prepare($link, $sql)) return false;
-    mysqli_stmt_bind_param($stmt, "siiiss", $title, $author, $pages, $pubYear, $publisher, $cover);
+    mysqli_stmt_bind_param($stmt, "siiissi", $title, $author, $pages, $pubYear, $publisher,
+        $cover, $dateCreated);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     return true;
@@ -35,7 +36,7 @@ function selectItemsFromAuthors()
     return $items;
 }
 
-function getIdOfAuthor($name, $surname, $patronymic, $country)
+function getIdOfAuthor($name, $surname, $patronymic, $country, $dateCreated)
 {
     $authors = selectItemsFromAuthors();
     foreach ($authors as $author)
@@ -47,9 +48,9 @@ function getIdOfAuthor($name, $surname, $patronymic, $country)
 
     global $link;
 
-    $sql = 'INSERT INTO authors (name, surname, patronymic, country) VALUES (?,?,?,?)';
+    $sql = 'INSERT INTO authors (name, surname, patronymic, country, created_at) VALUES (?,?,?,?,?)';
     if (!$stmt = mysqli_prepare($link, $sql)) return false;
-    mysqli_stmt_bind_param($stmt, "ssss", $name, $surname, $patronymic, $country);
+    mysqli_stmt_bind_param($stmt, "ssssi", $name, $surname, $patronymic, $country, $dateCreated);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     $last_id = $link->insert_id;
@@ -90,27 +91,28 @@ function getItemFromAuthors($id)
     return $items[0];
 }
 
-function editItemInAuthors($name, $surname, $patronymic, $country, $id)
+function editItemInAuthors($name, $surname, $patronymic, $country, $id, $dateUpDate)
 {
     global $link;
-    $sql = "UPDATE authors SET name='$name', surname='$surname', patronymic='$patronymic',country='$country' WHERE id='$id'";
+    $sql = "UPDATE authors SET name='$name', surname='$surname', patronymic='$patronymic'
+,country='$country',updated_at=$dateUpDate WHERE id='$id'";
     mysqli_query($link, $sql);
     return true;
 }
 
-function editCountryInAuthors($country, $id)
+function editCountryInAuthors($country, $dateUpDate, $id)
 {
     global $link;
-    $sql = "UPDATE authors SET country='$country' WHERE id='$id'";
+    $sql = "UPDATE authors SET country='$country', updated_at=$dateUpDate WHERE id='$id'";
     mysqli_query($link, $sql);
     return true;
 }
 
-function editItemInBooks($title, $author, $pages, $pubYear, $publisher, $cover, $id)
+function editItemInBooks($title, $author, $pages, $pubYear, $publisher, $cover, $dateUpDate, $id)
 {
     global $link;
     $sql = "UPDATE books SET title='$title', author='$author', pages='$pages', 
- pubYear='$pubYear', publisher='$publisher', cover='$cover' WHERE id='$id'";
+ pubYear='$pubYear', publisher='$publisher', cover='$cover', updated_at=$dateUpDate WHERE id='$id'";
     mysqli_query($link, $sql);
     return true;
 }
@@ -121,4 +123,15 @@ function deleteItemInBooks($id)
     $sql = "DELETE FROM books WHERE id = $id";
     mysqli_query($link, $sql);
     return true;
+}
+
+function selectItemsFromBooksForExcelFile()
+{
+    global $link;
+    $sql = 'SELECT title, author, pages, pubYear, publisher FROM books';
+
+    if (!$result = mysqli_query($link, $sql)) return false;
+    $items = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_free_result($result);
+    return $items;
 }

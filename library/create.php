@@ -3,6 +3,7 @@ require "inc/lib.inc.php";
 require "inc/config.inc.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $dateCreated = time();
     $title = clearStr($_POST['title']);
     $authorFullName = clearStr($_POST['authorFullName']);
     $authorCountry = clearStr($_POST['authorCountry']);
@@ -14,9 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = explode(" ", $authorFullName)[0];
     $surname = explode(" ", $authorFullName)[1];
     $patronymic = explode(" ", $authorFullName)[2];
-    $idAuthor = getIdOfAuthor($name, $surname, $patronymic, $authorCountry);
+    $idAuthor = getIdOfAuthor($name, $surname, $patronymic, $authorCountry, $dateCreated);
 
-    addItemToBooks($title, $idAuthor, $pages, $pubYear, $publisher, $cover);
+    addItemToBooks($title, $idAuthor, $pages, $pubYear, $publisher, $cover, $dateCreated);
 
     header("Location: " . $_SERVER["REQUEST_URI"]);
     exit;

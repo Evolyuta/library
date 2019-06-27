@@ -9,6 +9,9 @@ switch ($id) {
     case 'list':
         include 'library/booksList.php';
         break;
+    case 'download':
+        include 'library/download.php';
+        break;
     default:
         include 'inc/index.inc.php';
 }

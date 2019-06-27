@@ -30,6 +30,8 @@ CREATE TABLE `books` (
   `pubYear` int(11) DEFAULT NULL,
   `publisher` varchar(255) NOT NULL DEFAULT '',
   `cover` varchar(255) NOT NULL DEFAULT '',
+  `created_at` int(11) DEFAULT NULL,
+  `updated_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -56,6 +58,8 @@ CREATE TABLE `authors` (
   `surname` varchar(255) NOT NULL DEFAULT '',
   `patronymic` varchar(255) NOT NULL DEFAULT '',
   `country` varchar(255) NOT NULL DEFAULT '',
+  `created_at` int(11) DEFAULT NULL,
+  `updated_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

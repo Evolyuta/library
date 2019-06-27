@@ -6,12 +6,12 @@ if (isset($_GET['del'])) {
     $del = abs((int)$_GET['del']);
     if ($del) deleteItemInBooks($del);
 }
-$book = selectItemsFromBooks();
-if ($book === false) {
+$books = selectItemsFromBooks();
+if ($books === false) {
     echo "Error!";
     exit;
 }
-if (!count($book)) {
+if (!count($books)) {
     echo "Empty!";
     exit;
 }
@@ -39,7 +39,7 @@ if (!count($book)) {
     <?php
 
 
-    foreach ($book as $book) {
+    foreach ($books as $book) {
         $authorId = $book['author'];
         $author = getItemFromAuthors($authorId);
         $authorFullName =
@@ -60,7 +60,7 @@ if (!count($book)) {
                 $book['id'] ?>">Посмотреть</td>
             <td><a href="library/edit.php?id=<?=
                 $book['id'] ?>">Редактировать</td>
-            <td><a href = "index.php?id=list&del=<?=$book['id']?>">Удалить</a></td>
+            <td><a href="index.php?id=list&del=<?= $book['id'] ?>">Удалить</a></td>
         </tr>
         <?
     }
