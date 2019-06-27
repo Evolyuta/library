@@ -1,12 +1,12 @@
 <?php
 require "/inc/lib.inc.php";
 require "/inc/config.inc.php";
-$books = selectItemsFromBooks();
-if ($books === false) {
+$book = selectItemsFromBooks();
+if ($book === false) {
     echo "Error!";
     exit;
 }
-if (!count($books)) {
+if (!count($book)) {
     echo "Empty!";
     exit;
 }
@@ -32,7 +32,7 @@ if (!count($books)) {
         <th>Удалить</th>
     </tr>
     <?php
-    foreach ($books as $book) {
+    foreach ($book as $book) {
         $authorId = $book['author'];
         $author = getItemFromAuthors($authorId);
         $authorFullName =
@@ -49,12 +49,11 @@ if (!count($books)) {
             <td><?= $book['pubYear'] ?></td>
             <td><?= $book['publisher'] ?></td>
             <td><?= $book['cover'] ?></td>
-            <td><a href="show.php?id=<?=
+            <td><a href="library/show.php?id=<?=
                 $book['id'] ?>">Посмотреть</td>
-            <td><a href="edit.php?id=<?=
+            <td><a href="library/edit.php?id=<?=
                 $book['id'] ?>">Редактировать</td>
-            <td><a href="delete.php?id=<?=
-                $book['id'] ?>">Удалить</td>
+            <td>Удалить</td>
         </tr>
         <?
     }

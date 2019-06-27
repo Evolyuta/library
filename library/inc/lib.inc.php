@@ -24,6 +24,17 @@ function addItemToBooks($title, $author, $pages, $pubYear, $publisher, $cover)
     return true;
 }
 
+function selectItemsFromAuthors()
+{
+    global $link;
+    $sql = "SELECT id, name, surname, patronymic, country FROM authors";
+
+    if (!$result = mysqli_query($link, $sql)) return false;
+    $items = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_free_result($result);
+    return $items;
+}
+
 function getIdOfAuthor($name, $surname, $patronymic, $country)
 {
     $authors = selectItemsFromAuthors();
@@ -32,7 +43,6 @@ function getIdOfAuthor($name, $surname, $patronymic, $country)
             and ($author['surname'] == $surname)
             and ($author['patronymic'] == $patronymic)) {
             return $author['id'];
-            exit;
         }
 
     global $link;
@@ -78,4 +88,29 @@ function getItemFromAuthors($id)
     $items = mysqli_fetch_all($result, MYSQLI_ASSOC);
     mysqli_free_result($result);
     return $items[0];
+}
+
+function editItemInAuthors($name, $surname, $patronymic, $country, $id)
+{
+    global $link;
+    $sql = "UPDATE authors SET name='$name', surname='$surname', patronymic='$patronymic',country='$country' WHERE id='$id'";
+    mysqli_query($link, $sql);
+    return true;
+}
+
+function editCountryInAuthors($country, $id)
+{
+    global $link;
+    $sql = "UPDATE authors SET country='$country' WHERE id='$id'";
+    mysqli_query($link, $sql);
+    return true;
+}
+
+function editItemInBooks($title, $author, $pages, $pubYear, $publisher, $cover, $id)
+{
+    global $link;
+    $sql = "UPDATE books SET title='$title', author='$author', pages='$pages', 
+ pubYear='$pubYear', publisher='$publisher', cover='$cover' WHERE id='$id'";
+    mysqli_query($link, $sql);
+    return true;
 }
