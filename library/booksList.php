@@ -1,6 +1,11 @@
 <?php
 require "/inc/lib.inc.php";
 require "/inc/config.inc.php";
+
+if (isset($_GET['del'])) {
+    $del = abs((int)$_GET['del']);
+    if ($del) deleteItemInBooks($del);
+}
 $book = selectItemsFromBooks();
 if ($book === false) {
     echo "Error!";
@@ -32,6 +37,8 @@ if (!count($book)) {
         <th>Удалить</th>
     </tr>
     <?php
+
+
     foreach ($book as $book) {
         $authorId = $book['author'];
         $author = getItemFromAuthors($authorId);
@@ -53,7 +60,7 @@ if (!count($book)) {
                 $book['id'] ?>">Посмотреть</td>
             <td><a href="library/edit.php?id=<?=
                 $book['id'] ?>">Редактировать</td>
-            <td>Удалить</td>
+            <td><a href = "index.php?id=list&del=<?=$book['id']?>">Удалить</a></td>
         </tr>
         <?
     }

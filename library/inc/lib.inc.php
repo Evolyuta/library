@@ -114,3 +114,11 @@ function editItemInBooks($title, $author, $pages, $pubYear, $publisher, $cover, 
     mysqli_query($link, $sql);
     return true;
 }
+
+function deleteItemInBooks($id)
+{
+    global $link;
+    $sql = "DELETE FROM books WHERE id = $id";
+    mysqli_query($link, $sql);
+    return true;
+}
