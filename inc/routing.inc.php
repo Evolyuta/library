@@ -6,6 +6,9 @@ switch ($id) {
     case 'create':
         include 'library/create.php';
         break;
+    case 'list':
+        include 'library/booksList.php';
+        break;
     default:
         include 'inc/index.inc.php';
 }

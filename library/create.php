@@ -4,19 +4,19 @@ require "inc/config.inc.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = clearStr($_POST['title']);
-    $fullName = clearStr($_POST['fullName']);
-    $country = clearStr($_POST['country']);
+    $authorFullName = clearStr($_POST['authorFullName']);
+    $authorCountry = clearStr($_POST['authorCountry']);
     $pages = clearInt($_POST['pages']);
     $pubYear = clearInt($_POST['pubYear']);
     $publisher = clearStr($_POST['publisher']);
     $cover = clearStr($_POST['cover']);
 
-    $name = explode(" ", $fullName)[0];
-    $surname = explode(" ", $fullName)[1];
-    $patronymic = explode(" ", $fullName)[2];
-    $idAuthor = getIdOfAuthor($name, $surname, $patronymic, $country);
+    $name = explode(" ", $authorFullName)[0];
+    $surname = explode(" ", $authorFullName)[1];
+    $patronymic = explode(" ", $authorFullName)[2];
+    $idAuthor = getIdOfAuthor($name, $surname, $patronymic, $authorCountry);
 
-    addItemToBooks($title,$idAuthor,$pages,$pubYear,$publisher,$cover);
+    addItemToBooks($title, $idAuthor, $pages, $pubYear, $publisher, $cover);
 
     header("Location: " . $_SERVER["REQUEST_URI"]);
     exit;
@@ -27,8 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <form method="post" action="<?= $_SERVER['REQUEST_URI'] ?>">
     Название: <br/><input type="text" name="title"/><br/>
-    ФИО автора: <br/><input type="text" name="fullName"/><br/>
-    Страна автора: <br/><input type="text" name="country"/><br/>
+    ФИО автора: <br/><input type="text" name="authorFullName"/><br/>
+    Страна автора: <br/><input type="text" name="authorCountry"/><br/>
     Количество страниц: <br/><input type="text" name="pages"/><br/>
     Год публикации: <br/><input type="text" name="pubYear"/><br/>
     Издатель: <br/><input type="text" name="publisher"/><br/>
